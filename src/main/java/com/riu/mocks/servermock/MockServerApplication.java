@@ -17,6 +17,7 @@ import java.util.*;
 @RequestMapping("/mock-generator")
 public class MockServerApplication {
     private Map<String, Object> components;
+    private Set<String> processedRefs;
 
     public static void main(String[] args) {
         SpringApplication.run(MockServerApplication.class, args);
@@ -36,6 +37,7 @@ public class MockServerApplication {
 
             // Obtener los componentes
             components = (Map<String, Object>) yamlData.get("components");
+            processedRefs = new HashSet<>();
 
             // Generar los mocks
             List<Map<String, Object>> mocks = generateMocksFromYaml(yamlData);
@@ -94,6 +96,19 @@ public class MockServerApplication {
     }
 
     private Object generateMockValue(Map<String, Object> schema) {
+        String ref = (String) schema.get("$ref");
+
+        if (ref != null) {
+            String[] refParts = ref.split("/");
+            String refSchema = refParts[refParts.length - 1];
+            if (!processedRefs.contains(refSchema)) {
+                processedRefs.add(refSchema);
+                Map<String, Object> referencedSchema = getReferencedSchema(refSchema);
+                if (referencedSchema != null) {
+                    return generateMockValue(referencedSchema);
+                }
+            }
+        }
 
         String type = (String) schema.get("type");
 
@@ -119,7 +134,13 @@ public class MockServerApplication {
 
     private Map<String, Object> getReferencedSchema(String refSchema) {
         Map<String, Object> schemas = (Map<String, Object>) components.get("schemas");
-        return (Map<String, Object>) schemas.get(refSchema);
+        if (schemas != null) {
+            Object referencedSchema = schemas.get(refSchema);
+            if (referencedSchema instanceof Map) {
+                return (Map<String, Object>) referencedSchema;
+            }
+        }
+        return null;
     }
 
     private String generateRandomString() {
@@ -156,11 +177,13 @@ public class MockServerApplication {
         Map<String, Object> object = new LinkedHashMap<>();
         Map<String, Object> properties = (Map<String, Object>) schema.get("properties");
 
-        for (Map.Entry<String, Object> propertyEntry : properties.entrySet()) {
-            String propertyName = propertyEntry.getKey();
-            Map<String, Object> propertySchema = (Map<String, Object>) propertyEntry.getValue();
-            Object propertyValue = generateMockValue(propertySchema);
-            object.put(propertyName, propertyValue);
+        if (properties != null) {
+            for (Map.Entry<String, Object> propertyEntry : properties.entrySet()) {
+                String propertyName = propertyEntry.getKey();
+                Map<String, Object> propertySchema = (Map<String, Object>) propertyEntry.getValue();
+                Object propertyValue = generateMockValue(propertySchema);
+                object.put(propertyName, propertyValue);
+            }
         }
 
         return object;
