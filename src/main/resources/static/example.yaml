@@ -1,776 +1,802 @@
 openapi: 3.0.3
 info:
-  title: web_b2c_content_api
-  version: '1.2'
-  description: This API provides a set of operations to support RIU e-commerce front ends including web and mobile applications.
+  title: Swagger Petstore - OpenAPI 3.0
+  description: |-
+    This is a sample Pet Store Server based on the OpenAPI 3.0 specification.  You can find out more about
+    Swagger at [https://swagger.io](https://swagger.io). In the third iteration of the pet store, we've switched to the design first approach!
+    You can now help us improve the API whether it's by making changes to the definition itself or to the code.
+    That way, with time, we can improve the API in general, and expose some of the new features in OAS3.
+
+    _If you're looking for the Swagger 2.0/OAS 2.0 version of Petstore, then click [here](https://editor.swagger.io/?url=https://petstore.swagger.io/v2/swagger.yaml). Alternatively, you can load via the `Edit > Load Petstore OAS 2.0` menu option!_
+
+    Some useful links:
+    - [The Pet Store repository](https://github.com/swagger-api/swagger-petstore)
+    - [The source API definition for the Pet Store](https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml)
+  termsOfService: http://swagger.io/terms/
   contact:
-    name: TBD Arquitectura RIU
-    url: 'http://www.arquitectura.riu.com'
-    email: arquitectura@riu.com
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
 servers:
-  - url: 'http://localhost:3000'
+  - url: https://petstore3.swagger.io/api/v3
+tags:
+  - name: pet
+    description: Everything about your Pets
+    externalDocs:
+      description: Find out more
+      url: http://swagger.io
+  - name: store
+    description: Access to Petstore orders
+    externalDocs:
+      description: Find out more about our store
+      url: http://swagger.io
+  - name: user
+    description: Operations about user
 paths:
-  /product/content/web/corporate/ceos:
-    get:
-      summary: Get RIU Hotels corporate CEO's information
+  /pet:
+    put:
+      tags:
+        - pet
+      summary: Update an existing pet
+      description: Update an existing pet by Id
+      operationId: updatePet
+      requestBody:
+        description: Update an existent pet in the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pet'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Pet'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Pet'
+        required: true
       responses:
         '200':
-          description: OK
-          headers:
-            Accept-Version:
-              $ref: '#/components/headers/AcceptVersionParam'
-            Trace-Id:
-              $ref: '#/components/headers/TraceIdParam'
-            Content-Language:
-              $ref: '#/components/headers/ContentLanguageParam'
+          description: Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CEOS'
+                $ref: '#/components/schemas/Pet'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Pet'
         '400':
-          $ref: '#/components/responses/400BadRequestResponse'
-        '401':
-          $ref: '#/components/responses/401UnauthorizedResponse'
-        '403':
-          $ref: '#/components/responses/403ForbiddenResponse'
+          description: Invalid ID supplied
         '404':
-          $ref: '#/components/responses/404NotFoundResponse'
+          description: Pet not found
         '405':
-          $ref: '#/components/responses/405MethodNotAllowedResponse'
-        '406':
-          $ref: '#/components/responses/406NotAcceptableResponse'
-        '500':
-          $ref: '#/components/responses/500InternalErrorResponse'
-      operationId: get-corporate-ceos-info
-      description: This operation retrieves corporate CEOS information
-      parameters:
-        - schema:
-            type: string
-            example: ES
-          in: query
-          name: market
-          description: 'Market to be used for the current user, e.g. ''ES'', ''GB'''
-          required: true
-        - schema:
-            type: string
-            example: WEB
-          in: query
-          name: client
-          description: 'Current consumer application client type, e.g. ''APP'', ''WEB'''
-          required: true
-        - $ref: '#/components/parameters/AcceptVersionParam'
-        - $ref: '#/components/parameters/AcceptParam'
-        - $ref: '#/components/parameters/AcceptLanguageParam'
-        - $ref: '#/components/parameters/TraceIdParam'
-    parameters: []
-  /product/content/web/corporate/phones:
-    get:
-      summary: Get RIU Hotels corporate phones list for a given market
+          description: Validation exception
+      security:
+        - petstore_auth:
+            - write:pets
+            - read:pets
+    post:
+      tags:
+        - pet
+      summary: Add a new pet to the store
+      description: Add a new pet to the store
+      operationId: addPet
+      requestBody:
+        description: Create a new pet in the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pet'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Pet'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Pet'
+        required: true
       responses:
         '200':
-          description: OK
-          headers:
-            Accept-Version:
-              $ref: '#/components/headers/AcceptVersionParam'
-            Trace-Id:
-              $ref: '#/components/headers/TraceIdParam'
-            Content-Language:
-              $ref: '#/components/headers/ContentLanguageParam'
+          description: Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Phones'
-        '400':
-          $ref: '#/components/responses/400BadRequestResponse'
-        '401':
-          $ref: '#/components/responses/401UnauthorizedResponse'
-        '403':
-          $ref: '#/components/responses/403ForbiddenResponse'
-        '404':
-          $ref: '#/components/responses/404NotFoundResponse'
+                $ref: '#/components/schemas/Pet'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Pet'
         '405':
-          $ref: '#/components/responses/405MethodNotAllowedResponse'
-        '406':
-          $ref: '#/components/responses/406NotAcceptableResponse'
-        '500':
-          $ref: '#/components/responses/500InternalErrorResponse'
-      operationId: get-corporate-phones
-      description: 'This operation retrieves corporate phones for a given market (i.e. ES, FR, DE, ..)'
-      parameters:
-        - schema:
-            type: string
-            example: ES
-          in: query
-          name: market
-          description: 'Market to be used for the current user, e.g. ''ES'', ''GB'''
-          required: true
-        - schema:
-            type: string
-            example: WEB
-          in: query
-          name: client
-          description: 'Current consumer application client type, e.g. ''APP'', ''WEB'''
-          required: true
-        - $ref: '#/components/parameters/AcceptVersionParam'
-        - $ref: '#/components/parameters/AcceptParam'
-        - $ref: '#/components/parameters/AcceptLanguageParam'
-        - $ref: '#/components/parameters/TraceIdParam'
-    parameters: []
-  '/product/content/web/menu-sections/{menu-section-id}':
+          description: Invalid input
+      security:
+        - petstore_auth:
+            - write:pets
+            - read:pets
+  /pet/findByStatus:
     get:
-      summary: 'Get menus sections layouts (footers, headers , navigation bars, etc..)'
-      tags: []
+      tags:
+        - pet
+      summary: Finds Pets by status
+      description: Multiple status values can be provided with comma separated strings
+      operationId: findPetsByStatus
+      parameters:
+        - name: status
+          in: query
+          description: Status values that need to be considered for filter
+          required: false
+          explode: true
+          schema:
+            type: string
+            default: available
+            enum:
+              - available
+              - pending
+              - sold
       responses:
         '200':
-          description: OK
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pet'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pet'
+        '400':
+          description: Invalid status value
+      security:
+        - petstore_auth:
+            - write:pets
+            - read:pets
+  /pet/findByTags:
+    get:
+      tags:
+        - pet
+      summary: Finds Pets by tags
+      description: Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.
+      operationId: findPetsByTags
+      parameters:
+        - name: tags
+          in: query
+          description: Tags to filter by
+          required: false
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pet'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pet'
+        '400':
+          description: Invalid tag value
+      security:
+        - petstore_auth:
+            - write:pets
+            - read:pets
+  /pet/{petId}:
+    get:
+      tags:
+        - pet
+      summary: Find pet by ID
+      description: Returns a single pet
+      operationId: getPetById
+      parameters:
+        - name: petId
+          in: path
+          description: ID of pet to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pet'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Pet'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Pet not found
+      security:
+        - api_key: []
+        - petstore_auth:
+            - write:pets
+            - read:pets
+    post:
+      tags:
+        - pet
+      summary: Updates a pet in the store with form data
+      description: ''
+      operationId: updatePetWithForm
+      parameters:
+        - name: petId
+          in: path
+          description: ID of pet that needs to be updated
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: name
+          in: query
+          description: Name of pet that needs to be updated
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: Status of pet that needs to be updated
+          schema:
+            type: string
+      responses:
+        '405':
+          description: Invalid input
+      security:
+        - petstore_auth:
+            - write:pets
+            - read:pets
+    delete:
+      tags:
+        - pet
+      summary: Deletes a pet
+      description: delete a pet
+      operationId: deletePet
+      parameters:
+        - name: api_key
+          in: header
+          description: ''
+          required: false
+          schema:
+            type: string
+        - name: petId
+          in: path
+          description: Pet id to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '400':
+          description: Invalid pet value
+      security:
+        - petstore_auth:
+            - write:pets
+            - read:pets
+  /pet/{petId}/uploadImage:
+    post:
+      tags:
+        - pet
+      summary: uploads an image
+      description: ''
+      operationId: uploadFile
+      parameters:
+        - name: petId
+          in: path
+          description: ID of pet to update
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: additionalMetadata
+          in: query
+          description: Additional Metadata
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      security:
+        - petstore_auth:
+            - write:pets
+            - read:pets
+  /store/inventory:
+    get:
+      tags:
+        - store
+      summary: Returns pet inventories by status
+      description: Returns a map of status codes to quantities
+      operationId: getInventory
+      responses:
+        '200':
+          description: successful operation
           content:
             application/json:
               schema:
                 type: object
-                properties:
-                  id:
-                    type: string
-                  items:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/MenuItem'
-                required:
-                  - id
-                  - items
-              examples:
-                social-list:
-                  value:
-                    id: social-list
-                    items:
-                      - title: RIU Android
-                        link_url: 'https://play.google.com/store/apps/details?id=com.riu'
-                        type: ''
-                        position: 0
-                        icon: riu-icn-android
-                        colorHover: '#a4c639'
-                      - title: RIU Blog
-                        link_url: 'https://www.riu.com/blog/'
-                        type: ''
-                        position: 1
-                        icon: riu-icn-blog
-                        colorHover: '#fc4f08'
-                      - title: RIU in Facebook
-                        link_url: 'https://www.facebook.com/Riuhoteles'
-                        type: ''
-                        position: 2
-                        icon: riu-icn-facebook
-                        colorHover: '#3b5998'
-                      - title: RIU in Instagram
-                        link_url: 'https://instagram.com/riuhotels'
-                        type: ''
-                        position: 3
-                        icon: riu-icn-instagram
-                        colorHover: '#3f729b'
-                      - title: RIU in Twitter
-                        link_url: 'https://twitter.com/RiuHoteles'
-                        type: ''
-                        position: 4
-                        icon: riu-icn-twitter
-                        colorHover: '#00acee'
-                      - title: RIU Flick
-                        link_url: 'https://www.flickr.com/photos/riuhotels/'
-                        type: ''
-                        position: 5
-                        icon: riu-icn-flick
-                        colorHover: '#00acee'
-                      - title: RIU in Youtube
-                        link_url: 'https://www.youtube.com/user/RiuHotelsandResorts'
-                        type: ''
-                        position: 6
-                        icon: riu-icn-youtube
-                        colorHover: '#c4302b'
-                      - title: RIU in Pinterest
-                        link_url: 'https://pinterest.com/riuhotels'
-                        type: ''
-                        position: 7
-                        icon: riu-icn-pinterest
-                        colorHover: '#c8232c'
-                nav-bar:
-                  value:
-                    id: nav-bar
-                    items:
-                      - title: Hoteles
-                        link_url: 'https://www.riu.com/es/hotel/index.jsp'
-                        position: 0
-                      - title: Vuelos+Hotel
-                        link_url: 'https://vacation.riu.com/?utm_source=RIU.COM&utm_medium=Header&utm_campaign=PKGLAT&_ga=2.186970856.1110624193.1631106539-847704623.1620388085'
-                        position: 1
-                      - title: Riu Class
-                        link_url: 'https://www.riu.com/es/riu-class/index.jsp'
-                        position: 2
-                footer:
-                  value:
-                    id: footer
-                    items:
-                      - title: © Reservation Shop S.L.U - I-AV-0000886.1· NIF B35978311· 871 930 290
-                        link_url: '#'
-                        position: 0
-                      - title: Declaración de Privacidad
-                        link_url: '#'
-                        position: 1
-                      - title: 'Términos y Condiciones '
-                        link_url: 'https"://www.riu.com/'
-                        position: 2
-                      - title: 'Política de Cookies '
-                        link_url: 'https"://www.riu.com/'
-                        position: 3
-      operationId: get-menu-section
-      description: 'Get menu sections layouts (footers, headers , navigation bars, etc..)'
-      parameters:
-        - $ref: '#/components/parameters/AcceptVersionParam'
-        - $ref: '#/components/parameters/AcceptParam'
-        - $ref: '#/components/parameters/AcceptLanguageParam'
-        - $ref: '#/components/parameters/TraceIdParam'
-        - schema:
-            type: string
-          name: menu-section-id
-          in: path
-          required: true
-  /product/content/web/seo:
+                additionalProperties:
+                  type: integer
+                  format: int32
+      security:
+        - api_key: []
+  /store/order:
+    post:
+      tags:
+        - store
+      summary: Place an order for a pet
+      description: Place a new order in the store
+      operationId: placeOrder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Order'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Order'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '405':
+          description: Invalid input
+  /store/order/{orderId}:
     get:
-      summary: Your GET endpoint
-      tags: []
-      responses: {}
-      operationId: get-product-content-web-seo
-components:
-  responses:
-    202AcceptedResponse:
-      description: 202 - Accepted. The request will be processed later on.
-    204NoContentResponse:
-      description: 204 - No content.
-      headers:
-        location:
+      tags:
+        - store
+      summary: Find purchase order by ID
+      description: For valid response try integer IDs with value <= 5 or > 10. Other values will generate exceptions.
+      operationId: getOrderById
+      parameters:
+        - name: orderId
+          in: path
+          description: ID of order that needs to be fetched
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Order not found
+    delete:
+      tags:
+        - store
+      summary: Delete purchase order by ID
+      description: For valid response try integer IDs with value < 1000. Anything above 1000 or nonintegers will generate API errors
+      operationId: deleteOrder
+      parameters:
+        - name: orderId
+          in: path
+          description: ID of the order that needs to be deleted
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Order not found
+  /user:
+    post:
+      tags:
+        - user
+      summary: Create user
+      description: This can only be done by the logged in user.
+      operationId: createUser
+      requestBody:
+        description: Created user object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        default:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+  /user/createWithList:
+    post:
+      tags:
+        - user
+      summary: Creates list of users with given input array
+      description: Creates list of users with given input array
+      operationId: createUsersWithListInput
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+        default:
+          description: successful operation
+  /user/login:
+    get:
+      tags:
+        - user
+      summary: Logs user into the system
+      description: ''
+      operationId: loginUser
+      parameters:
+        - name: username
+          in: query
+          description: The user name for login
+          required: false
           schema:
             type: string
-            format: uri
-          description: Location of the resource
-    400BadRequestResponse:
-      description: 400 - Bad Request
-      content:
-        application/json:
+        - name: password
+          in: query
+          description: The password for login in clear text
+          required: false
           schema:
-            $ref: '#/components/schemas/Error'
-      headers: {}
-    404NotFoundResponse:
-      description: 404 - Not Found
-      content:
-        application/json:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          headers:
+            X-Rate-Limit:
+              description: calls per hour allowed by the user
+              schema:
+                type: integer
+                format: int32
+            X-Expires-After:
+              description: date in UTC when token expires
+              schema:
+                type: string
+                format: date-time
+          content:
+            application/xml:
+              schema:
+                type: string
+            application/json:
+              schema:
+                type: string
+        '400':
+          description: Invalid username/password supplied
+  /user/logout:
+    get:
+      tags:
+        - user
+      summary: Logs out current logged in user session
+      description: ''
+      operationId: logoutUser
+      parameters: []
+      responses:
+        default:
+          description: successful operation
+  /user/{username}:
+    get:
+      tags:
+        - user
+      summary: Get user by user name
+      description: ''
+      operationId: getUserByName
+      parameters:
+        - name: username
+          in: path
+          description: 'The name that needs to be fetched. Use user1 for testing. '
+          required: true
           schema:
-            $ref: '#/components/schemas/Error'
-    401UnauthorizedResponse:
-      description: 401 - Unauthorized
-      content:
-        application/json:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid username supplied
+        '404':
+          description: User not found
+    put:
+      tags:
+        - user
+      summary: Update user
+      description: This can only be done by the logged in user.
+      operationId: updateUser
+      parameters:
+        - name: username
+          in: path
+          description: name that need to be deleted
+          required: true
           schema:
-            $ref: '#/components/schemas/Error'
-    403ForbiddenResponse:
-      description: 403 - Forbiden
-      content:
-        application/json:
+            type: string
+      requestBody:
+        description: Update an existent user in the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        default:
+          description: successful operation
+    delete:
+      tags:
+        - user
+      summary: Delete user
+      description: This can only be done by the logged in user.
+      operationId: deleteUser
+      parameters:
+        - name: username
+          in: path
+          description: The name that needs to be deleted
+          required: true
           schema:
-            $ref: '#/components/schemas/Error'
-    406NotAcceptableResponse:
-      description: 406 - Not Acceptable
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    405MethodNotAllowedResponse:
-      description: 406 - Method Not Allowed
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    409ConflictResponse:
-      description: Example response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    429ToManyRequestsResponse:
-      description: 429 - Too many requests
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    500InternalErrorResponse:
-      description: 500 - Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    501NotImplementedResponse:
-      description: 501 - Not implemented
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-  parameters:
-    AcceptVersionParam:
-      name: Accept-Version
-      in: header
-      required: true
-      schema:
-        type: string
-        enum:
-          - vnd.web-b2c-content-api.v0
-        example: vnd.web-b2c-content-api.v0
-      description: Header parameter that indicates the API version the client is working with
-    PagingLimitParam:
-      name: limit
-      in: query
-      schema:
-        type: integer
-        default: 10
-      description: 'If paging is required, maximum number of items per page'
-    PagingOffsetParam:
-      name: offset
-      in: query
-      schema:
-        type: integer
-        default: 0
-      description: 'If paging is required, collection offset position'
-    AcceptParam:
-      name: Accept
-      in: header
-      required: true
-      schema:
-        type: string
-        enum:
-          - application/json
-          - application/xml
-      description: 'Header parameter that advertises which content types, expressed as MIME types, the client is able to understand'
-    AcceptLanguageParam:
-      name: Accept-Language
-      in: header
-      required: true
-      schema:
-        type: string
-      description: 'This header advertises which languages (natural languages) the client is able to understand, and which locale variant is preferred'
-    FilterParam:
-      name: filters
-      in: query
-      required: false
-      schema:
-        type: string
-        example: 'destinations.country[MX,AW],hotel.price>1000'
-      description: This parameter is used to specified filter queries in RSQL. Check the operation details to see which fields can be used in the filter query.
-    ContentLanguageParam:
-      name: Content-Language
-      in: header
-      required: false
-      schema:
-        type: string
-      description: Used to describe the language(s) intended for the audience
-    FieldsParams:
-      name: fields
-      in: query
-      required: false
-      schema:
-        type: string
-        example: 'name, hotels.hotel_id, hotels.agency_data.agency_id'
-      description: String formatted in JSON Mask notation used to request partial responses
-    TraceIdParam:
-      name: Trace-Id
-      in: header
-      required: false
-      schema:
-        type: string
-      description: Request header parameter that indicates the ID to trace the path followed by the different involved services
-  headers:
-    AcceptVersionParam:
-      required: true
-      schema:
-        type: string
-        enum:
-          - vnd.web-b2c-content-api.v0
-        example: vnd.web-b2c-content-api.v0
-      description: Header parameter that indicates the API version the client is working with
-    ContentLanguageParam:
-      required: false
-      schema:
-        type: string
-      description: Used to describe the language(s) intended for the audience
-    TraceIdParam:
-      required: false
-      schema:
-        type: string
-      description: Response header parameter that indicates the ID to trace the path followed by the different involved services
-    PagingTotalRecordCountParam:
-      required: false
-      schema:
-        type: integer
-      description: Response header parameter that indicates the total number of items returned by the operation
-    PagingPageNumberParam:
-      schema:
-        type: integer
-      description: 'Paging, current page'
-    PagingPageSizeParam:
-      schema:
-        type: integer
-      description: 'Paging, number of items of the current page'
-    PagingTotalPageCountParam:
-      schema:
-        type: integer
-      description: 'Paging, total number of pages'
+            type: string
+      responses:
+        '400':
+          description: Invalid username supplied
+        '404':
+          description: User not found
+components:
   schemas:
-    Error:
-      title: Error
-      type: object
-      properties:
-        error_code:
-          type: string
-        error_message:
-          type: string
-      required:
-        - error_code
-        - error_message
-    DescriptionModel:
-      title: DescriptionModel
+    Order:
       type: object
       properties:
         id:
+          type: integer
+          format: int64
+          example: 10
+        petId:
+          type: integer
+          format: int64
+          example: 198772
+        quantity:
+          type: integer
+          format: int32
+          example: 7
+        shipDate:
           type: string
+          format: date-time
+        status:
+          type: string
+          description: Order Status
+          example: approved
+          enum:
+            - placed
+            - approved
+            - delivered
+        complete:
+          type: boolean
+      xml:
+        name: order
+    Customer:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 100000
+        username:
+          type: string
+          example: fehguy
+        address:
+          type: array
+          xml:
+            name: addresses
+            wrapped: true
+          items:
+            $ref: '#/components/schemas/Address'
+      xml:
+        name: customer
+    Address:
+      type: object
+      properties:
+        street:
+          type: string
+          example: 437 Lytton
+        city:
+          type: string
+          example: Palo Alto
+        state:
+          type: string
+          example: CA
+        zip:
+          type: string
+          example: '94301'
+      xml:
+        name: address
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
         name:
           type: string
-        short_description:
-          type: string
-        description:
-          type: string
-      required:
-        - id
-        - name
-    Phones:
-      title: Corporate Phones
-      type: array
-      minItems: 1
-      uniqueItems: true
-      description: 'List of corporate phones to be shown to the end user for a given market (i.e. DE,ES,FR..)'
-      items:
-        type: object
-        properties:
-          id:
-            type: string
-          country_id:
-            type: string
-            minLength: 1
-          prefix:
-            type: string
-            minLength: 1
-          phone:
-            type: string
-            minLength: 1
-          kind:
-            type: string
-        required:
-          - id
-          - country_id
-          - prefix
-          - phone
-          - kind
-    CEOS:
-      title: Corporate CEOS info
-      type: array
-      minItems: 1
-      uniqueItems: true
-      description: Retrieve Riu Hotels CEOS info
-      items:
-        type: object
-        properties:
-          id:
-            type: string
-          job_title:
-            type: string
-          image_url:
-            type: string
-          short_description:
-            type: string
-          description:
-            type: string
-        required:
-          - id
-          - job_title
-          - image_url
-          - description
-    MenuItem:
-      description: Model representing an item on a web menu
+          example: Dogs
+      xml:
+        name: category
+    User:
       type: object
-      x-examples:
-        example-1:
-          title: Home
-          link_url: '{language}/home.jsp'
-          type: ''
-          position: 0
-          icon: riu-icn-instagram
-          colorHover: '#00acee'
-      examples: []
-      title: ''
       properties:
         id:
+          type: integer
+          format: int64
+          example: 10
+        username:
           type: string
-        title:
+          example: theUser
+        firstName:
           type: string
-          minLength: 1
-        link_url:
+          example: John
+        lastName:
           type: string
-          minLength: 1
+          example: James
+        email:
+          type: string
+          example: john@email.com
+        password:
+          type: string
+          example: '12345'
+        phone:
+          type: string
+          example: '12345'
+        userStatus:
+          type: integer
+          description: User Status
+          format: int32
+          example: 1
+      xml:
+        name: user
+    Tag:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+      xml:
+        name: tag
+    Pet:
+      required:
+        - name
+        - photoUrls
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        name:
+          type: string
+          example: doggie
+        category:
+          $ref: '#/components/schemas/Category'
+        photoUrls:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            type: string
+            xml:
+              name: photoUrl
+        tags:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: '#/components/schemas/Tag'
+        status:
+          type: string
+          description: pet status in the store
+          enum:
+            - available
+            - pending
+            - sold
+      xml:
+        name: pet
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
         type:
           type: string
-        position:
-          type: number
-        icon:
+        message:
           type: string
-          minLength: 1
-        alt:
-          type: string
-        aria-label:
-          type: string
-        role:
-          type: string
-          enum:
-            - alert
-            - alertdialog
-            - application
-            - article
-            - banner
-            - button
-            - cell
-            - checkbox
-            - columnheader
-            - combobox
-            - command
-            - comment
-            - complementary
-            - composite
-            - contentinfo
-            - definition
-            - dialog
-            - directory
-            - document
-            - feed
-            - figure
-            - form
-            - generic
-            - grid
-            - gridcell
-            - group
-            - heading
-            - img
-            - input
-            - landmark
-            - link
-            - list
-            - listbox
-            - listitem
-            - log
-            - main
-            - mark
-            - marquee
-            - math
-            - menu
-            - menubar
-            - menuitem
-            - menuitemcheckbox
-            - menuitemradio
-            - meter
-            - navigation
-            - none
-            - note
-            - option
-            - presentation
-            - progressbar
-            - radio
-            - radiogroup
-            - range
-            - region
-            - roletype
-            - row
-            - rowgroup
-            - rowheader
-            - scrollbar
-            - search
-            - searchbox
-            - section
-            - sectionhead
-            - select
-            - separator
-            - slider
-            - status
-            - document structurals
-            - structure
-            - suggestion
-            - switch
-            - tab
-            - table
-            - tablist
-            - tabpanel
-            - term
-            - textbox
-            - timer
-            - toolbar
-            - tooltip
-            - tree
-            - treegrid
-            - treeitem
-            - widget
-            - window
-        submenu:
-          type: array
-          items:
-            $ref: '#/components/schemas/MenuItem'
-      required:
-        - id
-        - title
-        - link_url
-        - position
-    SEO:
-      type: object
-      x-examples:
-        example-1:
-          i18n:
-            languages:
-              - en
-              - es
-              - de
-              - it
-            hasLangInUrl: true
-          views:
-            - name: global
-              path: /global
-              title: RIU.com | Ofertas | Reserva tu hotel en los mejores destinos
-              metatags:
-                - name: description
-                  content: 'Las mejores ofertas y promociones en hoteles y resorts de España, México, Jamaica, República Dominicana, Portugal, Miami y muchos más'
-                - name: keywords
-                  content: 'hoteles con todo incluido,ofertas hoteles todo incluido,hoteles todo incluido baratos,buscador de hoteles,hoteles en españa todo incluido,mejores hoteles todo incluido,ofertas de hoteles en la playa,promociones de hoteles en cancun'
-              social:
-                - name: 'og:title'
-                  content: RIU.com | Ofertas | Reserva tu hotel en los mejores destinos
-                - name: 'og:description'
-                  content: 'Las mejores ofertas y promociones en hoteles y resorts de España, México, Jamaica, República Dominicana, Portugal, Miami y muchos más'
-                - name: 'og:image'
-                  content: 'https://www.riu.com/fcs_images/riu2017/logo2018-riucom-movil.png'
-              jsonld:
-                '@context': 'http://schema.org'
-                '@type': WebSite
-                url: 'https://riu.com'
-            - name: magazine
-              path: /magazine
-              title: Magazine
-              metatags:
-                - name: description
-                  content: News
-                - name: keywords
-                  content: 'Foo, Bar'
-              social:
-                - name: 'og:title'
-                  content: Lorem Ipsum is simply dummy text.
-                - name: 'og:description'
-                  content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit'
-                - name: 'og:image'
-                  content: 'https://www.riu.com/fcs_images/riu2017/logo2018-riucom-movil.png'
-              jsonld:
-                '@context': 'http://schema.org'
-                '@type': WebSite
-                name: News
-                url: 'https://riu.com/magazine'
-              isAutomatic: true
-            - name: otra-vista-de-la-operativa
-              path: /otra-vista-de-la-operativa
-              title: Foo
-              metatags:
-                - name: description
-                  content: Foo
-                - name: keywords
-                  content: 'foo, Bar'
-              social:
-                - name: 'og:title'
-                  content: Ipsum is simply dummy text.
-                - name: 'og:description'
-                  content: 'Lore ipsum dolor sit amet, consectetur adipiscing elit'
-                - name: 'og:image'
-                  content: 'https://www.riu.com/fcs_images/riu2017/logo2018-riucom-movil.png'
-              jsonld:
-                '@context': 'http://schema.org'
-                '@type': WebSite
-                name: Products
-                url: 'https://www.riu.com/otra-vista-de-la-operativa'
-              isAutomatic: true
-            - name: otra-vista-más-de-la-operativa
-              path: /magazine-rooms
-              isAutomatic: false
-        example-2:
-          views:
-            - name: string
-              path: string
-              title: string
-              metatags:
-                - name: string
-                  content: string
-              social:
-                - name: string
-                  content: string
-              jsonld:
-                '@context': string
-                '@type': string
-                url: string
-                name: string
-              isAutomatic: true
-      properties:
-        views:
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-              path:
-                type: string
-              title:
-                type: string
-              metatags:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    name:
-                      type: string
-                    content:
-                      type: string
-              social:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    name:
-                      type: string
-                    content:
-                      type: string
-              jsonld:
-                type: object
-                properties:
-                  '@context':
-                    type: string
-                  '@type':
-                    type: string
-                  url:
-                    type: string
-                  name:
-                    type: string
-              isAutomatic:
-                type: boolean
+      xml:
+        name: '##default'
+  requestBodies:
+    Pet:
+      description: Pet object that needs to be added to the store
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Pet'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/Pet'
+    UserArray:
+      description: List of user object
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/User'
   securitySchemes:
-    oAuth2:
+    petstore_auth:
       type: oauth2
       flows:
-        clientCredentials:
-          tokenUrl: /oauth/token
-          refreshUrl: ''
-          scopes: {}
-security:
-  - oAuth2: []
+        implicit:
+          authorizationUrl: https://petstore3.swagger.io/oauth/authorize
+          scopes:
+            write:pets: modify pets in your account
+            read:pets: read your pets
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header

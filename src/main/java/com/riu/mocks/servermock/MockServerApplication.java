@@ -58,38 +58,45 @@ public class MockServerApplication {
             String path = entry.getKey();
             Map<String, Object> endpointData = (Map<String, Object>) entry.getValue();
 
-            // Buscar el objeto "get" dentro de "endpointData"
-            Map<String, Object> getEndpoint = (Map<String, Object>) endpointData.get("get");
-            if (getEndpoint != null) {
-                // Obtener el objeto "responses" dentro de "get"
-                Map<String, Object> responses = (Map<String, Object>) getEndpoint.get("responses");
-                if (responses != null) {
-                    for (Map.Entry<String, Object> responseEntry : responses.entrySet()) {
-                        String statusCode = responseEntry.getKey();
-                        Map<String, Object> response = (Map<String, Object>) responseEntry.getValue();
+                // Buscar el objeto de método dentro de endpointData
+                for (Map.Entry<String, Object> methodEntry : endpointData.entrySet()) {
+                    String method = methodEntry.getKey();
+                    if (method.equals("get") || method.equals("post") || method.equals("put") || method.equals("delete")) {
+                        Map<String, Object> methodData = (Map<String, Object>) methodEntry.getValue();
+                        String statusCode = ""; // Obtener el código de estado correspondiente
 
-                        // Generar el mock para el código de respuesta actual
-                        Object content = response.get("content");
-                        if (content instanceof Map) {
-                            Map<String, Object> contentMap = (Map<String, Object>) content;
-                            for (Map.Entry<String, Object> mediaTypeEntry : contentMap.entrySet()) {
-                                String mediaType = mediaTypeEntry.getKey();
-                                Map<String, Object> mediaTypeData = (Map<String, Object>) mediaTypeEntry.getValue();
-                                Map<String, Object> schema = (Map<String, Object>) mediaTypeData.get("schema");
+                        // Obtener el objeto "responses" dentro del objeto de método
+                        Map<String, Object> responses = (Map<String, Object>) methodData.get("responses");
+                        if (responses != null) {
+                            for (Map.Entry<String, Object> responseEntry : responses.entrySet()) {
+                                statusCode = responseEntry.getKey();
+                                Map<String, Object> response = (Map<String, Object>) responseEntry.getValue();
 
-                                // Generar el mock para el esquema actual
-                                Object mockValue = generateMockValue(schema);
-                                Map<String, Object> mock = new HashMap<>();
-                                mock.put("endpoint", path);
-                                mock.put("status_code", statusCode);
-                                mock.put("media_type", mediaType);
-                                mock.put("mock_value", mockValue);
-                                mocks.add(mock);
+                                // Generar el mock para el código de respuesta actual
+                                Object content = response.get("content");
+                                if (content instanceof Map) {
+                                    Map<String, Object> contentMap = (Map<String, Object>) content;
+                                    for (Map.Entry<String, Object> mediaTypeEntry : contentMap.entrySet()) {
+                                        String mediaType = mediaTypeEntry.getKey();
+                                        Map<String, Object> mediaTypeData = (Map<String, Object>) mediaTypeEntry.getValue();
+                                        Map<String, Object> schema = (Map<String, Object>) mediaTypeData.get("schema");
+
+                                        // Generar el mock para el esquema actual
+                                        Object mockValue = generateMockValue(schema);
+                                        Map<String, Object> mock = new HashMap<>();
+                                        mock.put("endpoint", path);
+                                        mock.put("request_method", method); // Agregar el tipo de solicitud al mock
+                                        mock.put("status_code", statusCode);
+                                        mock.put("media_type", mediaType);
+                                        mock.put("mock_value", mockValue);
+                                        mocks.add(mock);
+                                    }
+                                }
                             }
                         }
                     }
                 }
-            }
+
         }
 
         return mocks;
