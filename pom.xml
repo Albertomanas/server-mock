@@ -35,20 +35,18 @@
             <artifactId>swagger-core</artifactId>
             <version>2.2.15</version>
         </dependency>
+
         <dependency>
             <groupId>io.swagger.parser.v3</groupId>
             <artifactId>swagger-parser</artifactId>
             <version>2.1.16</version>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-autoconfigure</artifactId>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>junit</groupId>-->
-<!--            <artifactId>junit</artifactId>-->
-<!--            <version>4.13</version>-->
-<!--        </dependency>-->
+
         <dependency>
             <groupId>io.swagger</groupId>
             <artifactId>swagger-inflector</artifactId>
@@ -59,28 +57,21 @@
             <artifactId>javafaker</artifactId>
             <version>1.0.2</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>javax.ws.rs</groupId>-->
-<!--            <artifactId>javax.ws.rs-api</artifactId>-->
-<!--            <version>2.1.1</version>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>jakarta.servlet</groupId>-->
-<!--            <artifactId>jakarta.servlet-api</artifactId>-->
-<!--            <version>4.0.4</version>-->
-<!--            <scope>provided</scope>-->
-<!--        </dependency>-->
-        <!--        //Random Values-->
-<!--        <dependency>-->
-<!--            <groupId>com.github.javafaker</groupId>-->
-<!--            <artifactId>javafaker</artifactId>-->
-<!--            <version>1.0.2</version>-->
-<!--        </dependency>-->
+
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>1.33</version>
+        </dependency>
+        <dependency>
+            <groupId>org.checkerframework</groupId>
+            <artifactId>checker</artifactId>
+            <version>3.21.3</version>
+        </dependency>
 
     </dependencies>
     <build>
         <plugins>
-            <!-- Plugin para empaquetar la aplicación como un archivo JAR ejecutable -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
